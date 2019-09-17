@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.MajorVolunteerMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.MajorVolunteer">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="first_volunteer_id" property="firstVolunteerId"
+			jdbcType="INTEGER" />
+		<result column="second_volunteer_id" property="secondVolunteerId"
+			jdbcType="INTEGER" />
+		<result column="third_volunteer_id" property="thirdVolunteerId"
+			jdbcType="INTEGER" />
+		<result column="student_id" property="studentId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="VolunteerNameMap" type="cn.bitzh.model.vo.VolunteerNameVo">
+		<id column="studentId" property="studentId" jdbcType="VARCHAR" />
+		<result column="studentName" property="studentName" jdbcType="VARCHAR" />
+		<result column="firstVolunteerName" property="firstVolunteerName"
+			jdbcType="VARCHAR" />
+		<result column="secondVolunteerName" property="secondVolunteerName"
+			jdbcType="VARCHAR" />
+		<result column="thirdVolunteerName" property="thirdVolunteerName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectVolunteerNameByStudentId" parameterType="java.lang.String" resultMap="VolunteerNameMap" >
+	SELECT
+	s.id AS studentId,
+	s.name AS studentName,
+	m1.name AS firstVolunteerName,
+	m2.name AS secondVolunteerName,
+	m3.name AS thirdVolunteerName
+	FROM
+	Student s
+	LEFT JOIN
+	Major_Volunteer mv
+	ON
+	s.id=mv.student_id
+	LEFT JOIN
+	Major m1
+	ON
+	mv.first_volunteer_id=m1.id
+	LEFT JOIN
+	Major m2
+	ON mv.second_volunteer_id=m2.id
+	LEFT JOIN
+	Major m3
+	ON
+	mv.third_volunteer_id=m3.id
+	<where>
+		<if test="studentId!=null and studentId!=''">
+			and s.id=#{studentId}
+		</if>
+	</where>
+	</select>
+
+</mapper>

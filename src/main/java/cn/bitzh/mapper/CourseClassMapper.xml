@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.CourseClassMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.CourseClass">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="year" property="year" jdbcType="SMALLINT" />
+		<result column="semester" property="semester" jdbcType="BIT" />
+		<result column="capacity" property="capacity" jdbcType="INTEGER" />
+		<result column="enroll_number" property="enrollNumber"
+			jdbcType="INTEGER" />
+		<result column="class_room_id" property="classRoomId" jdbcType="INTEGER" />
+		<result column="course_id" property="courseId" jdbcType="INTEGER" />
+	</resultMap>
+</mapper>

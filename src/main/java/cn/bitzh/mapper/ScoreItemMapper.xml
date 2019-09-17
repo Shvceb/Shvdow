@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.ScoreItemMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.ScoreItem">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="regular_grade" property="regularGrade"
+			jdbcType="REAL" />
+		<result column="mid_grade" property="midGrade" jdbcType="REAL" />
+		<result column="final_grade" property="finalGrade" jdbcType="REAL" />
+		<result column="total_mark" property="totalMark" jdbcType="REAL" />
+		<result column="bol_float" property="bolFloat" jdbcType="BIT" />
+		<result column="score_id" property="scoreId" jdbcType="INTEGER" />
+	</resultMap>
+</mapper>

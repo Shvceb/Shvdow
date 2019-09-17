@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.CourseTrainingItemMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.CourseTrainingItem">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="course_id" property="courseId" jdbcType="INTEGER" />
+		<result column="training_item_id" property="trainingItemId"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="CourseTrainingItemMap" type="cn.bitzh.model.vo.CourseTrainingItemVo"
+		extends="BaseResultMap">
+		<result column="courseNum" property="courseNum" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="credit" property="credit" jdbcType="INTEGER" />
+		<result column="tip" property="tip" jdbcType="VARCHAR" />
+		<result column="term" property="term" jdbcType="VARCHAR" />
+		<result column="courseType" property="courseType" jdbcType="VARCHAR" />
+		<result column="examination" property="examination" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="insertCourseTrainingItem">
+		INSERT INTO
+		Course_Training_Item(course_id,training_item_id)
+		VALUES(#{courseId},#{trainingItemId})
+	</insert>
+
+	<select id="selectCourseTrainingItemVoList" parameterType="cn.bitzh.model.MajorDirectionTrainingItem"
+		resultMap="CourseTrainingItemMap">
+        SELECT
+	    ctt.*,
+	    c.course_id 
+	    AS
+	    courseNum,
+     	c.name
+	    AS
+	    NAME,
+	    c.credit
+	    AS
+	    credit,
+	    c.tip
+     	AS
+	    tip,
+	    c.term
+	    AS
+	    term,
+	    ct.type
+	    AS
+	    courseType,
+	    e.course_exam
+	    AS
+	    examination
+	    FROM
+	    Course_Training_Item ctt
+	    LEFT JOIN
+	    Course c
+	    ON
+	    ctt.course_id=c.id
+	    LEFT JOIN
+        Course_Type ct
+	    ON
+	    c.course_type_id=ct.id
+	    LEFT JOIN
+	    Examination e
+	    ON 
+	    c.examination_id=e.id
+        <where>
+        ctt.training_item_id=(SELECT mdt.id FROM Major_Direction_Training_Item mdt WHERE mdt.direction_id=#{directionId} AND mdt.major_id=#{majorId} AND mdt.training_id=#{trainingId})
+        </where>
+	</select>
+</mapper>

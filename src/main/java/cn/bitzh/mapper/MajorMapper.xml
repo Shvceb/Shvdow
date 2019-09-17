@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.MajorMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.Major">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="major_id" property="majorId" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="pre_number" property="preNumber" jdbcType="INTEGER" />
+		<result column="actual_number" property="actualNumber"
+			jdbcType="INTEGER" />
+		<result column="major_describe" property="majorDescribe"
+			jdbcType="LONGVARCHAR" />
+		<result column="major_target" property="majorTarget" jdbcType="LONGVARCHAR" />
+		<result column="requirement" property="requirement" jdbcType="LONGVARCHAR" />
+		<result column="core_course" property="coreCourse" jdbcType="LONGVARCHAR" />
+		<result column="direction_fit" property="directionFit"
+			jdbcType="LONGVARCHAR" />
+		<result column="credit_ask" property="creditAsk" jdbcType="VARCHAR" />
+		<result column="institute_id" property="instituteId" jdbcType="INTEGER" />
+		<result column="training_id" property="trainingId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="MajorChoiceMap" type="cn.bitzh.model.vo.MajorChoiceVo">
+		<result column="gradeName" property="gradeName" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="INTEGER" />
+		<result column="studentName" property="studentName" jdbcType="VARCHAR" />
+		<result column="studentId" property="studentId" jdbcType="VARCHAR" />
+		<result column="majorName" property="majorName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Major_Choice_Vo">
+	SELECT 
+		c.name AS gradeName ,
+		c.grade AS grade ,
+		s.name AS studentName ,
+		s.id AS studentId ,
+		m.name AS majorName
+		FROM 
+		Student AS s 
+		LEFT JOIN 
+		Class_Student_Item AS i 
+		ON 
+		s.id=i.student_id 
+		LEFT JOIN 
+		Class AS c 
+		ON 
+		c.id=i.class_id 
+		LEFT JOIN 
+		Major AS m 
+		ON
+		m.id=s.major_id
+	</sql>
+
+	<select id="selectMajorChoiceList" resultMap="MajorChoiceMap">
+		<include refid="Major_Choice_Vo"></include>
+		<where>
+		and c.direction_id is NULL
+		</where>
+	</select>
+	
+	<select id="selectMajorChoiceByWords" parameterType="String" resultMap="MajorChoiceMap">
+		<include refid="Major_Choice_Vo"></include>
+		<where>
+			and c.direction_id is NULL
+			<if test="word!=null and word!=''">
+			and (c.name LIKE "%"#{word}"%" OR s.name LIKE "%"#{word}"%" OR s.id LIKE "%"#{word}"%")
+			</if>
+		</where>
+	</select>
+</mapper>

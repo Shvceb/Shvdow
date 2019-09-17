@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.CourseMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.Course">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="course_id" property="courseId" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="credit" property="credit" jdbcType="INTEGER" />
+		<result column="tip" property="tip" jdbcType="VARCHAR" />
+		<result column="term" property="term" jdbcType="VARCHAR" />
+		<result column="institute_id" property="instituteId" jdbcType="INTEGER" />
+		<result column="course_type_id" property="courseTypeId"
+			jdbcType="INTEGER" />
+		<result column="examination_id" property="examinationId"
+			jdbcType="INTEGER" />
+
+	</resultMap>
+</mapper>

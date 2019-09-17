@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.DirectionMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.Direction">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="direction_id" property="directionId" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="direction_describe" property="directionDescribe"
+			jdbcType="LONGVARCHAR" />
+		<result column="pre_number" property="preNumber" jdbcType="INTEGER" />
+		<result column="actual_number" property="actualNumber"
+			jdbcType="INTEGER" />
+		<result column="major_id" property="majorId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="DirectionChoiceMap" type="cn.bitzh.model.vo.DirectionChoiceVo">
+		<result column="gradeName" property="gradeName" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="INTEGER" />
+		<result column="studentName" property="studentName" jdbcType="VARCHAR" />
+		<result column="studentId" property="studentId" jdbcType="VARCHAR" />
+		<result column="directionName" property="directionName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Direction_Choice_Vo">
+		SELECT
+		c.name AS gradeName ,
+		c.grade AS grade ,
+		s.id AS studentId ,
+		s.name AS studentName ,
+		d.name AS directionName
+		FROM
+		Student AS s
+		LEFT JOIN
+		Class_Student_Item AS ci
+		ON
+		s.id=ci.student_id
+		LEFT JOIN
+		Class AS c
+		ON
+		c.id=ci.class_id
+		LEFT JOIN
+		Direction AS d
+		ON
+		s.direction_id=d.id
+	</sql>
+
+	<select id="selectDirectionChoiceList" resultMap="DirectionChoiceMap">
+		<include refid="Direction_Choice_Vo"></include>
+		<where>
+			and c.direction_id is NULL
+		</where>
+	</select>
+
+	<select id="selectDirectionChoiceByWords" parameterType="String" resultMap="DirectionChoiceMap">
+		<include refid="Direction_Choice_Vo"></include>
+		<where>
+			and c.direction_id is NULL
+			<if test="word!=null and word!=''">
+			and (c.name LIKE "%"#{word}"%" OR s.name LIKE "%"#{word}"%" OR s.id LIKE "%"#{word}"%")
+			</if>
+		</where>
+	</select>
+
+</mapper>

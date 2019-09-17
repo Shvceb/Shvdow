@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.ClassRoomMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.ClassRoom">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="room_size" property="roomSize" jdbcType="INTEGER" />
+		<result column="at_building" property="atBuilding" jdbcType="VARCHAR" />
+	</resultMap>
+</mapper>

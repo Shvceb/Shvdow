@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.StudentMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.Student">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="BIT" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="major_id" property="majorId" jdbcType="INTEGER" />
+		<result column="direction_id" property="directionId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="VolunteerAndResultMap" type="cn.bitzh.model.vo.VolunteerAndResultVo">
+		<id column="studentId" property="studentId" jdbcType="VARCHAR" />
+		<result column="studentName" property="studentName" jdbcType="VARCHAR" />
+		<result column="firstMajorVolunteer" property="firstMajorVolunteer"
+			jdbcType="VARCHAR" />
+		<result column="secondMajorVolunteer" property="secondMajorVolunteer"
+			jdbcType="VARCHAR" />
+		<result column="thirdMajorVolunteer" property="thirdMajorVolunteer"
+			jdbcType="VARCHAR" />
+		<result column="firstDirectionVolunteer" property="firstDirectionVolunteer"
+			jdbcType="VARCHAR" />
+		<result column="secondDirectionVolunteer" property="secondDirectionVolunteer"
+			jdbcType="VARCHAR" />
+		<result column="thirdDirectionVolunteer" property="thirdDirectionVolunteer"
+			jdbcType="VARCHAR" />
+		<result column="majorName" property="majorName" jdbcType="VARCHAR" />
+		<result column="majorId" property="majorId" jdbcType="INTEGER" />
+		<result column="directionName" property="directionName"
+			jdbcType="VARCHAR" />
+		<result column="directionId" property="directionId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Volunteer_And_Result_Vo">
+		SELECT 
+		s.id AS studentId,
+		s.name AS studentName,
+		m1.name AS firstMajorVolunteer,
+		m2.name AS secondMajorVolunteer,
+		m3.name AS thirdMajorVolunteer,
+		d1.name AS firstDirectionVolunteer,
+		d2.name AS secondDirectionVolunteer,
+		d3.name AS thirdDirectionVolunteer,
+		nm.name AS majorName,
+		nm.id AS majorId,
+		nd.name AS directionName,
+		nd.id AS directionId
+		FROM 
+		Student s
+		LEFT JOIN 
+		Major_Volunteer mv
+		ON 
+		s.id=mv.student_id
+		LEFT JOIN
+		Major m1
+		ON 
+		mv.first_volunteer_id=m1.id
+		LEFT JOIN 
+		Major m2
+		ON mv.second_volunteer_id=m2.id
+		LEFT JOIN 
+		Major m3
+		ON 
+		mv.third_volunteer_id=m3.id
+		LEFT JOIN 
+		Major nm
+		ON 
+		s.major_id=nm.id
+		LEFT JOIN 
+		Direction_Volunteer dv
+		ON 
+		s.id=dv.student_id
+		LEFT JOIN 
+		Direction d1
+		ON 
+		dv.first_volunteer_id=d1.id
+		LEFT JOIN 
+		Direction d2
+		ON 
+		dv.second_volunteer_id=d2.id
+		LEFT JOIN 
+		Direction d3
+		ON
+		dv.third_volunteer_id=d3.id
+		LEFT JOIN 
+		Direction nd
+		ON 
+		s.direction_id=nd.id
+	</sql>
+	<select id="selectVolterAndResByStudentId" parameterType="java.lang.String"
+		resultMap="VolunteerAndResultMap">
+		<include refid="Volunteer_And_Result_Vo"></include>
+		<where>
+			<if test="studentId!=null and studentId!=''">
+				and s.id=#{studentId}
+			</if>
+		</where>
+	</select>
+                
+
+</mapper>

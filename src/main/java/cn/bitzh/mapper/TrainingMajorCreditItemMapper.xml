@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bitzh.dao.TrainingMajorCreditItemMapper">
+
+	<resultMap id="BaseResultMap" type="cn.bitzh.model.TrainingMajorCreditItem">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="major_id" property="majorId" jdbcType="INTEGER" />
+		<result column="training_id" property="trainingId" jdbcType="INTEGER" />
+		<result column="credit" property="credit" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="MajorCreditMap" type="cn.bitzh.model.vo.MajorCreditVo">
+		<result column="trainingName" property="trainingName" jdbcType="VARCHAR" />
+		<result column="credit" property="credit" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<update id="updateMajorCredit" parameterType="cn.bitzh.model.TrainingMajorCreditItem">
+		UPDATE
+		Training_Major_Credit_Item
+		SET
+		credit=#{trainingMajorCreditItem.credit}
+		WHERE
+		major_id=#{trainingMajorCreditItem.majorId}
+		AND
+		training_id=#{trainingMajorCreditItem.trainingId}
+	</update>
+
+	<select id="selectMajorCreditList" parameterType="java.lang.Integer"
+		resultMap="MajorCreditMap">
+		SELECT
+		tm.credit
+		AS
+		credit,
+		t.type
+		AS
+		trainingName
+		FROM
+		Training_Major_Credit_Item tm
+		LEFT JOIN
+		Training t
+		ON
+		tm.training_id=t.id
+		WHERE
+		tm.major_id=#{majorId}
+	</select>
+
+	<insert id="insertTrainingMajorCreditItem" parameterType="java.lang.Integer">
+		INSERT
+		INTO
+		Training_Major_Credit_Item(major_id,training_id)
+		VALUES
+		(#{majorId},#{trainingId})
+	</insert>
+</mapper>
